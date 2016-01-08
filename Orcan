@@ -1,3 +1,4 @@
+'начальная версия'
 Imports System.Speech.Synthesis
 Public Class Form1
     Dim comp_screen_width, comp_screen_height As Integer
