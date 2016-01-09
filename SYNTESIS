@@ -1,0 +1,5 @@
+'в project reference добавляем необходимые библиотеки (system.speech и т.д)'
+Imports System.Speech.Synthesis
+  Dim frase As New SpeechSynthesizer
+  frase.rate - 'скорость произношения'
+  frase.speak - 'произнесёт фразу'
