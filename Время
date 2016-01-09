@@ -1,0 +1,6 @@
+'Таймер можно на 1000 мс'
+ Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        time_lbl.Text = Format(TimeOfDay, "HH:mm")
+        'время будет отображаться в 24-часовом формате'
+        'если хотим 12-часовой - пишем "hh:mm"'
+    End Sub
