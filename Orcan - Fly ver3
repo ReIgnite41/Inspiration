@@ -1,0 +1,55 @@
+Imports System.Speech.Synthesis
+Public Class Form1
+    Dim time_val As String
+    Dim a As String = ""
+    Dim b As String = ""
+    Dim time_val_str As String
+    Dim today_date As String
+    Dim response As MsgBoxResult
+    Dim phrase As New SpeechSynthesizer
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Label1.Text = Format(TimeOfDay, "HH:mm:ss")
+        time_val_str = Format(Now, "HH:mm dd.MM.yy")
+        today_date = Format(DateTimePicker1.Text)
+        Label4.Text = today_date
+
+    End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        Label1.Text = Format(TimeOfDay, "HH:mm:ss")
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        phrase.Rate = 3
+        phrase.Speak("Подтвердите выключение компьютера")
+        response = MsgBox("Подтверждение выключения компьютера", MsgBoxStyle.YesNo, "Orcan - Fly")
+        If response = MsgBoxResult.Yes Then
+            If NumericUpDown1.Value < 10 Then
+                a = "0"
+            Else
+                a = ""
+            End If
+            If NumericUpDown2.Value < 10 Then
+                b = "0"
+            Else
+                b = ""
+            End If
+            time_val = a & NumericUpDown1.Value & ":" & b & NumericUpDown2.Value & " " & Format(DateTimePicker1.Value, "dd.MM.yy")
+            Label2.Text = a & NumericUpDown1.Value & ":" & b & NumericUpDown2.Value
+            Label2.ForeColor = Color.DarkOrange
+            Label3.ForeColor = Color.DarkOrange
+            Label3.Text = Format(DateTimePicker1.Text)
+            Timer2.Enabled = True
+            Timer3.Enabled = True
+            Button1.Enabled = False
+            Button1.ForeColor = Color.DarkOrange
+        End If
+    End Sub
+
+    Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
+        If time_val = time_val_str Then
+            'процесс
+        End If
+    End Sub
+End Class
