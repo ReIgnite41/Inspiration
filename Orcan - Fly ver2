@@ -1,0 +1,44 @@
+Public Class Form1
+    Dim time_val As String
+    Dim a As String = ""
+    Dim b As String = ""
+    Dim time_val_str As String
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Label1.Text = Format(TimeOfDay, "HH:mm:ss")
+        Label5.Text = Format(DateTimePicker1.Value, "dd.MM.yy")
+        time_val_str = Format(Now, "HH:mm dd.MM.yy")
+        Label4.Text = time_val_str
+
+    End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        Label1.Text = Format(TimeOfDay, "hh:mm:ss")
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        If NumericUpDown1.Value < 10 Then
+            a = "0"
+        Else
+            a = ""
+        End If
+        If NumericUpDown2.Value < 10 Then
+            b = "0"
+        Else
+            b = ""
+        End If
+        time_val = a & NumericUpDown1.Value & ":" & b & NumericUpDown2.Value & " " & Format(DateTimePicker1.Value, "dd.MM.yy")
+        Label5.Text = time_val
+        Label2.Text = a & NumericUpDown1.Value & ":" & b & NumericUpDown2.Value
+        Label2.ForeColor = Color.Black
+        Timer2.Enabled = True
+        Button1.Enabled = False
+        Button1.ForeColor = Color.DarkOrange
+    End Sub
+
+    Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
+        If time_val = time_val_str Then
+            'процесс
+        End If
+    End Sub
+End Class
