@@ -1,0 +1,33 @@
+Public Class Form1
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        ToolTip1.SetToolTip(Label1, "Текущее время")
+        ToolTip1.SetToolTip(Label2, "Время включения компьютера")
+        Label1.Text = Format(TimeOfDay, "HH:mm:ss")
+    End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        Label1.Text = Format(TimeOfDay, "hh:mm:ss")
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        If TextBox1.Text = "" Then
+            MsgBox("Введите время включения компьютера")
+        End If
+        If TextBox1.Text <> "" Then
+            Label2.ForeColor = Color.Black
+            Label2.Text = TextBox1.Text
+            Button1.ForeColor = Color.DarkOrange
+            TextBox1.Text = ""
+            TextBox1.Enabled = False
+            Button1.Enabled = False
+        End If
+        Timer2.Enabled = True
+    End Sub
+
+    Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
+        If TextBox1.Text = Format(TimeOfDay, "hh:mm:ss") Then
+            MsgBox("Nyan!")
+        End If
+    End Sub
+End Class
