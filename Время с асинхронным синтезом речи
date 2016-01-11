@@ -1,0 +1,23 @@
+Imports System.Speech.Synthesis
+
+Public Class Form1
+
+    Dim phrase_syntesizer As New SpeechSynthesizer
+    Dim phrase_to_speak As String
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Label1.Text = Format(TimeOfDay, "HH:mm:ss")
+        Label1.Cursor = Cursors.Hand
+        Timer1.Interval = 1000
+        Timer1.Enabled = True
+    End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        Label1.Text = Format(TimeOfDay, "HH:mm:ss")
+    End Sub
+
+    Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label1.Click
+        phrase_to_speak = Format(TimeOfDay, "HH:mm")
+        phrase_syntesizer.SpeakAsync(phrase_to_speak)
+    End Sub
+End Class
