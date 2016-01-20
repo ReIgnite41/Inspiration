@@ -1,0 +1,44 @@
+Public Class Form1
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        OpenFileDialog2.Filter = "Mp3 файлы (*.mp3)|*.mp3|Все файлы (*.*)|*.*"
+        If OpenFileDialog2.ShowDialog = DialogResult.Cancel Then Exit Sub
+        AxWindowsMediaPlayer2.URL = OpenFileDialog2.FileName
+        ListBox1.Items.Add(OpenFileDialog2.FileName)
+        Timer1.Start()
+
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        AxWindowsMediaPlayer2.Ctlcontrols.play()
+    End Sub
+    Private Sub ListBox1_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles ListBox1.DoubleClick
+        If ListBox1.SelectedItem <> "" Then ' Если запись выбранна:
+            AxWindowsMediaPlayer2.URL = ListBox1.Items.Item(ListBox1.SelectedIndex)
+        Else ' Если запись не выбранна, то выдаем сообщение:
+            MsgBox("Добавьте песни", , "Плеер")
+        End If
+    End Sub
+
+    Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+        AxWindowsMediaPlayer2.Ctlcontrols.pause()
+        AxWindowsMediaPlayer2.settings
+    End Sub
+    Private Sub TrackBar1_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrackBar1.Scroll
+        AxWindowsMediaPlayer2.settings.volume = TrackBar1.Value
+        Label2.Text = AxWindowsMediaPlayer2.settings.volume
+    End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
+        Label1.Text = AxWindowsMediaPlayer2.Ctlcontrols.currentPositionString
+        Label3.Text = AxWindowsMediaPlayer2.status
+    End Sub
+
+    Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        AxWindowsMediaPlayer2.Ctlcontrols.stop()
+    End Sub
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        TrackBar1.Value = AxWindowsMediaPlayer2.settings.volume
+        Label2.Text = AxWindowsMediaPlayer2.settings.volume
+    End Sub
+End Class
