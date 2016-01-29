@@ -1,0 +1,31 @@
+Private Function GetTagSTR(ByVal path As String) As String()
+        ReDim GetTagSTR(8)
+        Dim L As Integer
+        Dim FS As System.IO.FileStream
+        FS = System.IO.File.Open(path, IO.FileMode.Open, IO.FileAccess.Read)
+        L = FS.Length
+        Dim buff(L - 1) As Byte
+        FS.Read(buff, 0, L)
+        FS.Close()
+        FS.Dispose() ' на всякий случай
+        Dim s0, s1, s2, s3, s4, s5, s6, s7, s8 As String
+        s0 = System.Text.Encoding.Default.GetChars(buff, L - 128, 3) 'TAG - заголовок метатега
+        s1 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 3, 30) 'название
+        s2 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 33, 30) 'исполнитель
+        s3 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 63, 30) 'альбом
+        s4 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 93, 4) 'год
+        s5 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 97, 28) 'комментарий
+        s6 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 125, 1) 'нулевой байт.Если номер трека присутствует, этот байт равен 0. 
+        s7 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 126, 1) 'Номер трека в альбоме или 0. Учитывается только если предыдущее поле=0
+        s8 = System.Text.Encoding.Default.GetChars(buff, L - 128 + 127, 1) 'Индекс в списке жанров или 255
+        GetTagSTR.SetValue(s0, 0)
+        GetTagSTR.SetValue(s1, 1)
+        GetTagSTR.SetValue(s2, 2)
+        GetTagSTR.SetValue(s3, 3)
+        GetTagSTR.SetValue(s4, 4)
+        GetTagSTR.SetValue(s5, 5)
+        GetTagSTR.SetValue(CStr(AscW(s6)), 6)
+        GetTagSTR.SetValue(CStr(AscW(s7)), 7)
+        GetTagSTR.SetValue(CStr(AscW(s8)), 8)
+        Return GetTagSTR
+    End Function
