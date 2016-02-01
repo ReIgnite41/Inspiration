@@ -1,0 +1,166 @@
+Imports AxWMPLib
+Public Class Form1
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        AxWindowsMediaPlayer1.settings.autoStart = True
+        AxWindowsMediaPlayer1.settings.volume = volume.Value
+        Me.AllowDrop = True
+
+    End Sub
+
+    Dim x As Integer
+    Dim temp As String
+    Dim n As Integer = 0
+    Dim playing_item As Integer = 0
+
+
+
+
+    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Pause.Click
+        AxWindowsMediaPlayer1.Ctlcontrols.pause()
+        Pause.Hide()
+        Play.Show()
+        Me.Refresh()
+        Play.Focus()
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Play.Click
+        If Playlist1.Items.Count > 0 Then
+            AxWindowsMediaPlayer1.Ctlcontrols.play()
+            Play.Hide()
+            Pause.Show()
+            Me.Refresh()
+            Pause.Focus()
+        End If
+    End Sub
+
+    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
+        Me.Close()
+    End Sub
+
+    Private Sub Label1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    End Sub
+
+    Private Sub TrackBar1_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles volume.Scroll
+        AxWindowsMediaPlayer1.settings.volume = volume.Value
+        Label1.Visible = True
+        Label1.Text = volume.Value
+    End Sub
+
+    Private Sub ListBox1_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        AxWindowsMediaPlayer1.URL = Playlist1.SelectedItem
+    End Sub
+
+    Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        AxWindowsMediaPlayer1.Ctlcontrols.stop()
+        Pause.Hide()
+        Play.Show()
+        Me.Refresh()
+        Play.Focus()
+    End Sub
+
+
+
+    Private Sub Button1_Click_2(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mute.Click
+        If AxWindowsMediaPlayer1.settings.mute = True Then
+            AxWindowsMediaPlayer1.settings.mute = False
+        Else : AxWindowsMediaPlayer1.settings.mute = True
+        End If
+    End Sub
+
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles prev.Click
+    End Sub
+
+
+    Private Sub volume_MouseUp(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles volume.MouseUp
+        Timer2.Start()
+    End Sub
+
+    Private Sub Timer2_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer2.Tick
+        Label1.Visible = False
+        Timer2.Stop()
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles next1.Click
+    End Sub
+
+    Private Sub Timer3_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer3.Tick
+        ProgressBar.Maximum = AxWindowsMediaPlayer1.currentMedia.duration
+        duration.Text = AxWindowsMediaPlayer1.currentMedia.durationString
+        Progressbar_timer.Start()
+        Timer3.Stop()
+    End Sub
+
+    Private Sub Button2_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        AxWindowsMediaPlayer1.Ctlcontrols.fastReverse()
+    End Sub
+
+    Private Sub Button1_Click_3(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        AxWindowsMediaPlayer1.Ctlcontrols.fastForward()
+    End Sub
+
+    Private Sub Form1_DragDrop(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles MyBase.DragDrop
+        Dim file() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+        For I As Integer = 0 To file.Length - 1
+            Playlist1.Items.Add(file(I))
+        Next
+    End Sub
+
+    Private Sub Form1_DragEnter(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles MyBase.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    Private Sub add_song_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles add_song.Click
+        OpenFileDialog1.Filter = "Аудио файлы (*.mp3)|*.mp3|Все файлы (*.*)|*.*"
+        OpenFileDialog1.ShowDialog()
+        If OpenFileDialog1.FileName <> "" Then
+            Фонотека.Items.Add(OpenFileDialog1.FileName)
+            AxWindowsMediaPlayer1.URL = OpenFileDialog1.FileName
+            Playlist1.Items.Add(AxWindowsMediaPlayer1.currentMedia.name)
+            Play.Hide()
+            Pause.Show()
+            Me.Refresh()
+            Timer3.Start()
+        End If
+    End Sub
+
+
+    Private Sub ProgressBar_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ProgressBar.Scroll
+        AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = ProgressBar.Value
+    End Sub
+
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Progressbar_timer.Tick
+        ProgressBar.Value = AxWindowsMediaPlayer1.Ctlcontrols.currentPosition
+        curr_pos.Text = AxWindowsMediaPlayer1.Ctlcontrols.currentPositionString
+    End Sub
+
+    Private Sub duration_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles duration.Click
+
+    End Sub
+
+    Private Sub Label1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label1.Click
+
+    End Sub
+
+    Private Sub curr_pos_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles curr_pos.Click, Label2.Click
+
+    End Sub
+
+    Private Sub Timer4_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Status_timer.Tick
+        Status.Text = AxWindowsMediaPlayer1.status
+    End Sub
+
+    Private Sub Playlist1_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Playlist1.DoubleClick
+        If Playlist1.SelectedIndex >= 0 Then
+            AxWindowsMediaPlayer1.URL = Фонотека.Items.Item(Playlist1.SelectedIndex)
+        Else
+
+        End If
+    End Sub
+End Class
